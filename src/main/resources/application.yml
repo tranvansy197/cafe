@@ -1,0 +1,10 @@
+server:
+  security:
+    algorithm: HS512
+    key: qwertyuiopasdfghjklzxcvbnm
+    token-expire: 10
+    refresh-token-expire: 30
+    authorization-type: Bearer
+    authorization-header: Authorization
+file:
+  upload-dir: upload

@@ -1,0 +1,70 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.2'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.cafe'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+ext {
+    mapstructVersion = '1.5.2.Final'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    all*.exclude module : 'spring-boot-starter-logging'
+}
+repositories {
+    mavenCentral()
+}
+compileJava {
+    options.compilerArgs += [
+            '-Amapstruct.defaultComponentModel=spring',
+            '-Amapstruct.unmappedTargetPolicy=IGNORE'
+    ]
+}
+dependencies {
+    implementation 'javax.xml.bind:jaxb-api:2.3.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.hibernate:hibernate-core:6.4.2.Final'
+    annotationProcessor group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '6.4.2.Final'
+
+    // MAPSTRUCT
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+
+    compileOnly "org.mapstruct:mapstruct:${mapstructVersion}"
+    compileOnly 'org.hibernate.orm:hibernate-jpamodelgen'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // LOMBOK
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // MAPSTRUCT
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
